@@ -8,7 +8,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class QuestionsController : ControllerBase
     {
         // GET api/values
         [HttpGet]
@@ -26,8 +26,10 @@ namespace backend.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] Models.Question question)
+        public void Post([FromBody]Models.Question questionText)
         {
+            Console.WriteLine("mohsen");
+            Console.WriteLine(questionText);
         }
 
         // PUT api/values/5
