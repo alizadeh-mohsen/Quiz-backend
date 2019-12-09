@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using backend.Data;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace backend.Controllers
 {
@@ -10,11 +10,16 @@ namespace backend.Controllers
     [ApiController]
     public class QuestionsController : ControllerBase
     {
+        private QuizDbContext context;
+        public QuestionsController(QuizDbContext quizContext)
+        {
+            this.context = quizContext;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<Question>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return context.Questions;
         }
 
         // GET api/values/5
@@ -26,10 +31,10 @@ namespace backend.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Models.Question questionText)
+        public void Post([FromBody]Question question)
         {
-            Console.WriteLine("mohsen");
-            Console.WriteLine(questionText);
+            context.Questions.Add(question);
+            context.SaveChanges();
         }
 
         // PUT api/values/5
