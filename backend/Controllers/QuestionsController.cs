@@ -1,8 +1,9 @@
 ﻿using backend.Data;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace backend.Controllers
 {
@@ -31,16 +32,39 @@ namespace backend.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Question question)
+        public async Task<IActionResult> Post([FromBody]Question question)
         {
             context.Questions.Add(question);
-            context.SaveChanges();
+            await context.SaveChangesAsync().ConfigureAwait(false);
+            return Ok(question);
+            
+
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] Question EditedQuestion)
         {
+
+            if (id != EditedQuestion.Id)
+            {
+                return BadRequest();
+            }
+            //var oldQuestion =await  context.Questions.FirstOrDefaultAsync(Question => Question.Id == id);
+
+            //if (oldQuestion == null)
+            //    return NotFound();
+
+            //oldQuestion.Text = EditedQuestion.Text;
+            //oldQuestion.CorrectAnswer = EditedQuestion.CorrectAnswer;
+            //oldQuestion.WrongAnswer1 = EditedQuestion.WrongAnswer1;
+            //oldQuestion.WrongAnswer2 = EditedQuestion.WrongAnswer2;
+            //oldQuestion.WrongAnswer3 = EditedQuestion.WrongAnswer3;
+            //context.SaveChanges();
+
+            context.Entry(EditedQuestion).State = EntityState.Modified;
+            await context.SaveChangesAsync().ConfigureAwait(false);
+            return Ok(EditedQuestion);
         }
 
         // DELETE api/values/5
